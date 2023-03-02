@@ -59,20 +59,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var plantoidMetadata_1 = __importDefault(require("./abi/plantoidMetadata"));
-var plantoid_1 = __importDefault(require("./abi/plantoid"));
 var ethers_1 = require("ethers");
 var fs = __importStar(require("fs"));
 var config_1 = require("./config");
 var pin_1 = require("./pin");
-function doStuff() {
-    // code to run
-    console.log('Hello world!');
-}
 function reveal() {
     return __awaiter(this, void 0, void 0, function () {
         var provider, signer, plantoidMetadataAddress, plantoidAddress, files, index, file, res, ipfsHash, tokenUri, tokenId, msgHash, sig, iface, data, tx, relayTransactionHash, signature, relayTransaction;
@@ -138,49 +129,6 @@ function reveal() {
                     return [3 /*break*/, 1];
                 case 7: return [2 /*return*/];
             }
-        });
-    });
-}
-function listen() {
-    return __awaiter(this, void 0, void 0, function () {
-        var plantoidMetadataAddress, plantoidAddress, infuraApiKey, privatekey, provider, signer, metadataContract, plantoidContract;
-        return __generator(this, function (_a) {
-            console.log('Hello world!');
-            plantoidMetadataAddress = '0xB36d0593c0659996611e854b1d7797bF7829BbEE';
-            plantoidAddress = '0xf8f838dc69d59ea02ee0e25d7f0e982a6248f58d';
-            infuraApiKey = config_1.env.infuraKey;
-            privatekey = config_1.env.privateKey;
-            provider = new ethers_1.ethers.providers.InfuraProvider('goerli', infuraApiKey);
-            signer = new ethers_1.ethers.Wallet(privatekey, provider);
-            metadataContract = new ethers_1.ethers.Contract(plantoidMetadataAddress, plantoidMetadata_1.default, signer);
-            plantoidContract = new ethers_1.ethers.Contract(plantoidAddress, plantoid_1.default, signer);
-            // const iface = new ethers.utils.Interface(['function echo(string message)']);
-            // const data = iface.encodeFunctionData('echo', ['Hello world 3!  ']);
-            // const tx = {
-            //   to: '0x6663184b3521bF1896Ba6e1E776AB94c317204B6',
-            //   data: data,
-            //   gas: '800000',
-            //   schedule: 'fast',
-            // };
-            // console.log(tx);
-            // const relayTransactionHash = ethers.utils.keccak256(
-            //   ethers.utils.defaultAbiCoder.encode(
-            //     ['address', 'bytes', 'uint', 'uint', 'string'],
-            //     [tx.to, tx.data, tx.gas, 5, tx.schedule], // Rinkeby chainId is 4
-            //   ),
-            // );
-            // const signature = await signer.signMessage(
-            //   ethers.utils.arrayify(relayTransactionHash),
-            // );
-            // const { relayTransaction } = await provider.send('relay_sendTransaction', [
-            //   tx,
-            //   signature,
-            // ]);
-            // console.log(`ITX relay hash: ${relayTransaction}`);
-            plantoidContract.on('Deposit', function (amount, from, tokenId) {
-                console.log(amount, from, tokenId);
-            });
-            return [2 /*return*/];
         });
     });
 }
