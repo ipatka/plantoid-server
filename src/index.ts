@@ -79,8 +79,11 @@ async function reveal() {
 
 
 async function run() {
-  reveal();
-  // listen()
+  await reveal();
+  console.log("Finished reveal. Checking again in 10 seconds")
+  await new Promise(res=>setTimeout(res,10000))
+  process.nextTick(run)
 }
+
 
 run();
