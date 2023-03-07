@@ -73,6 +73,7 @@ async function reveal() {
       signature,
     ]);
     console.log(`ITX relay hash: ${relayTransaction}`);
+    fs.renameSync(env.inputFolder + file, env.outputFolder + file);
   }
 }
 
