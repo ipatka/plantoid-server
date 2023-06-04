@@ -12,7 +12,7 @@ async function reveal() {
   // Submit reveal to infura
   console.log('Revealing');
 
-  const provider = new ethers.providers.InfuraProvider('goerli', env.infuraKey);
+  const provider = new ethers.providers.InfuraProvider('matic', env.infuraKey);
   const signer = new ethers.Wallet(env.privateKey, provider);
 
   const plantoidMetadataAddress = env.plantoidMetadataAddress;
@@ -60,7 +60,7 @@ async function reveal() {
     const relayTransactionHash = ethers.utils.keccak256(
       ethers.utils.defaultAbiCoder.encode(
         ['address', 'bytes', 'uint', 'uint', 'string'],
-        [tx.to, tx.data, tx.gas, 5, tx.schedule], // Rinkeby chainId is 4
+        [tx.to, tx.data, tx.gas, 137, tx.schedule], // Rinkeby chainId is 4
       ),
     );
 
