@@ -2,16 +2,20 @@
 
 import { ethers } from 'ethers';
 import * as fs from 'fs';
+import { Relayer } from '@openzeppelin/defender-relay-client';
 
 import { env } from './config';
 import { pinFileToIPFS } from './pin';
-
 
 async function reveal() {
   // Upload content to ipfs
   // Submit reveal to infura
   console.log('Revealing');
 
+  const relayClient = new Relayer({
+    apiKey: env.relayApiKey,
+    apiSecret: env.relayApiSecret,
+  });
   const provider = new ethers.providers.InfuraProvider('matic', env.infuraKey);
   const signer = new ethers.Wallet(env.privateKey, provider);
 
@@ -46,44 +50,28 @@ async function reveal() {
       plantoidAddress,
       tokenId,
       tokenUri,
-      sig
+      sig,
     ]);
 
     const tx = {
       to: plantoidMetadataAddress,
       data: data,
-      gas: '100000',
+      gasLimit: '100000',
       schedule: 'fast',
     };
-    console.log(tx);
 
-    const relayTransactionHash = ethers.utils.keccak256(
-      ethers.utils.defaultAbiCoder.encode(
-        ['address', 'bytes', 'uint', 'uint', 'string'],
-        [tx.to, tx.data, tx.gas, 137, tx.schedule], // Rinkeby chainId is 4
-      ),
-    );
-
-    const signature = await signer.signMessage(
-      ethers.utils.arrayify(relayTransactionHash),
-    );
-
-    const { relayTransaction } = await provider.send('relay_sendTransaction', [
-      tx,
-      signature,
-    ]);
-    console.log(`ITX relay hash: ${relayTransaction}`);
+    const relayTransaction = await relayClient.sendTransaction(tx);
+    console.log({ relayTransaction })
+    console.log(`ITX relay hash: ${relayTransaction.hash}`);
     fs.renameSync(env.inputFolder + file, env.outputFolder + file);
   }
 }
 
-
 async function run() {
   await reveal();
-  console.log("Finished reveal. Checking again in 10 seconds")
-  await new Promise(res=>setTimeout(res,10000))
-  process.nextTick(run)
+  console.log('Finished reveal. Checking again in 10 seconds');
+  await new Promise((res) => setTimeout(res, 10000));
+  process.nextTick(run);
 }
-
 
 run();

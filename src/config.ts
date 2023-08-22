@@ -10,4 +10,6 @@ export const env = {
   privateKey: process.env.PRIVATE_KEY || '',
   plantoidMetadataAddress: process.env.PLANTOID_MD_ADDRESS || '',
   plantoidAddress: process.env.PLANTOID_ADDRESS || '',
+  relayApiKey: process.env.RELAY_API_KEY || '',
+  relayApiSecret: process.env.RELAY_API_SECRET || '',
 };
